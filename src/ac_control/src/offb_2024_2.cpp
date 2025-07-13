@@ -96,7 +96,8 @@ void VisinoCallBack(const ac_control::qr_scanner::ConstPtr &msg)
 void runMode1(const std::vector<Waypoint>& waypoints, int& step, int& sametimes, mavros_msgs::PositionTarget& pose,
               ros::Publisher& local_pose_pub, ros::Publisher& fcu_state_pub, ros::Publisher& fcu_location_pub,
               std_msgs::Bool& fcu_state, std_msgs::String& fcu_location, const geometry_msgs::PoseStamped& local_pose,
-              const std_msgs::Bool& vision_state,ros::ServiceClient& set_mode_client, ros::Time& last_request) {
+              const std_msgs::Bool& vision_state,ros::ServiceClient& set_mode_client, ros::Time& last_request, bool &mission_finished,
+              ros::ServiceClient &arming_client, int &mode) {
     if (step < waypoints.size() - 1)
     { 
         const auto& wp = waypoints[step];
@@ -135,23 +136,45 @@ void runMode1(const std::vector<Waypoint>& waypoints, int& step, int& sametimes,
         if(isReached(local_pose, wp)) {
             if (sametimes > 10) {
                 ROS_INFO("已到达%s，任务完成，准备降落", wp.location.c_str());
-                // 切换到降落模式
-                mavros_msgs::SetMode offb_set_mode;
-                offb_set_mode.request.custom_mode = "AUTO.LAND";
-                if (current_state.mode != "AUTO.LAND" && (ros::Time::now() - last_request > ros::Duration(5.0)))
-                {
-                    if (set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent)
-                    {
-                        ROS_INFO("成功切换到 AUTO.LAND 模式");
-                    }
-                    last_request = ros::Time::now();
-                }               
+                step += 1;     
             } else {
                 sametimes++;
             }
         } else {
             sametimes = 0;
         }
+    }
+    else if(step == waypoints.size()) 
+    {
+        pose.position.z = 0;
+        mavros_msgs::SetMode offb_set_mode;
+        offb_set_mode.request.custom_mode = "AUTO.LAND";
+        if (current_state.mode != "AUTO.LAND" && (ros::Time::now() - last_request > ros::Duration(5.0)))
+        {
+            if (set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent)
+            {
+                ROS_INFO("成功切换到 AUTO.LAND 模式");
+            }
+            last_request = ros::Time::now();
+        }
+
+        if (local_pose.pose.position.z < 0.1)
+        {
+            if (sametimes > 10)
+            {
+                mission_finished = true;
+                mode = 3;
+                ROS_INFO("降落完成，任务1结束，进入空闲模式");
+            }
+            else
+            {
+                sametimes++;
+            }
+        }
+        else
+        {
+            sametimes = 0;
+        }    
     }
     else 
     {
@@ -170,7 +193,8 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
               std_msgs::Bool& fcu_state, std_msgs::String& fcu_location, const geometry_msgs::PoseStamped& local_pose,
               const std_msgs::Bool& vision_state, const AreaMap& allAreas,
               mavros_msgs::SetMode& offb_set_mode, ros::ServiceClient& set_mode_client,
-              mavros_msgs::State& current_state, ros::Time& last_request)
+              ros::Time& last_request, bool &mission_finished,
+              ros::ServiceClient &arming_client, int &mode)
 {
     // 查找目标区
     auto areaIt = allAreas.find(bigClass);
@@ -189,7 +213,7 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
     // step=1: 到目标货位点
     // step=2: 到结束点
     // step=3: 到降落点并降落
-    // step>3: 任务完成
+    // step=4: 任务完成并上锁
 
     // 1. 起飞到起始点
     if (step == 0) {
@@ -197,7 +221,7 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
         pose.position.x = wp.x;
         pose.position.y = wp.y;
         pose.position.z = wp.z;
-        local_pose_pub.publish(pose);
+
         fcu_location.data = wp.location;
         fcu_location_pub.publish(fcu_location);
 
@@ -221,7 +245,6 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
         pose.position.x = wp.x;
         pose.position.y = wp.y;
         pose.position.z = wp.z;
-        local_pose_pub.publish(pose);
 
         fcu_location.data = wp.location;
         fcu_location_pub.publish(fcu_location);
@@ -252,7 +275,7 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
         pose.position.x = wp.x;
         pose.position.y = wp.y;
         pose.position.z = wp.z;
-        local_pose_pub.publish(pose);
+
         fcu_location.data = wp.location;
         fcu_location_pub.publish(fcu_location);
 
@@ -275,7 +298,7 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
         pose.position.x = landing_wp.x;
         pose.position.y = landing_wp.y;
         pose.position.z = landing_wp.z;
-        local_pose_pub.publish(pose);
+
         fcu_location.data = landing_wp.location;
         fcu_location_pub.publish(fcu_location);
 
@@ -298,30 +321,36 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
         pose.position.x = landing_wp.x;
         pose.position.y = landing_wp.y;
         pose.position.z = 0.5; // 降落高度
-        local_pose_pub.publish(pose);
         fcu_location.data = "landing";
         fcu_location_pub.publish(fcu_location);
-
-        if (std::fabs(local_pose.pose.position.z - 0.5) < 0.05) {
-            if (sametimes > 10) {
-                offb_set_mode.request.custom_mode = "AUTO.LAND";
-                if (current_state.mode != "AUTO.LAND" && (ros::Time::now() - last_request > ros::Duration(5.0))) {
-                    if (set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent) {
-                        ROS_INFO("成功切换到 AUTO.LAND 模式");
-                    }
-                    last_request = ros::Time::now();
-                }
-            } else {
+        mavros_msgs::SetMode offb_set_mode;
+        offb_set_mode.request.custom_mode = "AUTO.LAND";
+        if (current_state.mode != "AUTO.LAND" && (ros::Time::now() - last_request > ros::Duration(5.0)))
+        {
+            if (set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent)
+            {
+                ROS_INFO("成功切换到 AUTO.LAND 模式");
+            }
+            last_request = ros::Time::now();
+        }
+        if (local_pose.pose.position.z < 0.15)
+        {
+            if (sametimes > 10)
+            {
+                mission_finished = true;
+                mode = 3;
+                step ++;
+                ROS_INFO("降落完成，任务2结束，进入空闲模式");
+            }
+            else
+            {
                 sametimes++;
             }
-        } else {
-            sametimes = 0;
         }
-        return;
-    }
 
+    }
     // step>4: 任务完成
-    if (step > 4) {
+    else{
         ROS_INFO("区域%s任务全部完成", bigClass.c_str());
         return;
     }
@@ -476,39 +505,65 @@ int main(int argc, char **argv) {
 
     int mode1_step = 0, mode2_step = 0, sametimes = 0;
     int mode = 1;
+    int last_mode = 3;
     std::string bigClass;
     int subTask;
+    bool mission_finished = false;
 
     while (ros::ok()) { 
         // 解析视觉任务
         parseTask(vision_date.position, bigClass, subTask);
         mode = vision_date.mode;
 
-        // 模式切换与解锁逻辑
-        if (current_state.mode != "OFFBOARD" &&
-            (ros::Time::now() - last_request > ros::Duration(5.0))) {
-            if (set_mode_client.call(offb_set_mode) &&
-                offb_set_mode.response.mode_sent) {
-                ROS_INFO("Offboard enabled");
-            }
-            last_request = ros::Time::now();
-        } else {
-            if (!current_state.armed &&
+        // 检查是否有新的任务模式
+        if ((vision_date.mode == 1 || vision_date.mode == 2) && vision_date.mode != last_mode)
+        {
+            mode = vision_date.mode;
+            last_mode = mode;
+            mission_finished = false;
+            mode1_step = 0;
+            mode2_step = 0;
+            sametimes = 0;
+            
+            ROS_INFO("收到新任务模式: %d，开始新任务", mode);
+        }
+        
+        // 如果任务完成，保持当前状态  
+        if(mission_finished)
+        {
+            ros::spinOnce();
+            rate.sleep();   
+        }
+        else
+        {
+            // 模式切换与解锁逻辑
+            if (current_state.mode != "OFFBOARD" &&
                 (ros::Time::now() - last_request > ros::Duration(5.0))) {
-                if (arming_client.call(arm_cmd) &&
-                    arm_cmd.response.success) {
-                    ROS_INFO("Vehicle armed");
+                if (set_mode_client.call(offb_set_mode) &&
+                    offb_set_mode.response.mode_sent) {
+                    ROS_INFO("Offboard enabled");
                 }
                 last_request = ros::Time::now();
             } else {
-                if (mode == 1) {
-                    runMode1(mode1_waypoints, mode1_step, sametimes, pose, local_pose_pub, 
-                            fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, local_pose, 
-                            vision_state, set_mode_client, last_request);
-                } else if (mode == 2) {
-                    runMode2(bigClass, subTask, mode2_step, sametimes, pose, local_pose_pub, 
-                            fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, local_pose, 
-                            vision_state, allAreas, offb_set_mode, set_mode_client, current_state, last_request);
+                if (!current_state.armed &&
+                    (ros::Time::now() - last_request > ros::Duration(5.0))) {
+                    if (arming_client.call(arm_cmd) &&
+                        arm_cmd.response.success) {
+                        ROS_INFO("Vehicle armed");
+                    }
+                    last_request = ros::Time::now();
+                } else {
+                    if (mode == 1) {
+                        runMode1(mode1_waypoints, mode1_step, sametimes, pose, local_pose_pub, 
+                                fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, local_pose, 
+                                vision_state, set_mode_client, last_request, mission_finished, 
+                                arming_client, mode);
+                    } else if (mode == 2) {
+                        runMode2(bigClass, subTask, mode2_step, sametimes, pose, local_pose_pub, 
+                                fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, local_pose, 
+                                vision_state, allAreas, offb_set_mode, set_mode_client,
+                                last_request, mission_finished, arming_client, mode);
+                    }
                 }
             }
         }

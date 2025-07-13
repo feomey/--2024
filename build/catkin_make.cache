@@ -1,0 +1,2 @@
+ac_control
+-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCATKIN_DEVEL_PREFIX=/home/zhu/acfly/my_code/devel -DCMAKE_INSTALL_PREFIX=/home/zhu/acfly/my_code/install -G Unix Makefiles

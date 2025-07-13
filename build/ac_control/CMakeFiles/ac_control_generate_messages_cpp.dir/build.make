@@ -54,7 +54,6 @@ CMAKE_BINARY_DIR = /home/zhu/acfly/my_code/build
 include ac_control/CMakeFiles/ac_control_generate_messages_cpp.dir/progress.make
 
 ac_control/CMakeFiles/ac_control_generate_messages_cpp: /home/zhu/acfly/my_code/devel/include/ac_control/qr_scanner.h
-ac_control/CMakeFiles/ac_control_generate_messages_cpp: /home/zhu/acfly/my_code/devel/include/ac_control/visino_fcu.h
 
 
 /home/zhu/acfly/my_code/devel/include/ac_control/qr_scanner.h: /opt/ros/noetic/lib/gencpp/gen_cpp.py
@@ -63,16 +62,8 @@ ac_control/CMakeFiles/ac_control_generate_messages_cpp: /home/zhu/acfly/my_code/
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating C++ code from ac_control/qr_scanner.msg"
 	cd /home/zhu/acfly/my_code/src/ac_control && /home/zhu/acfly/my_code/build/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /home/zhu/acfly/my_code/src/ac_control/msg/qr_scanner.msg -Iac_control:/home/zhu/acfly/my_code/src/ac_control/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p ac_control -o /home/zhu/acfly/my_code/devel/include/ac_control -e /opt/ros/noetic/share/gencpp/cmake/..
 
-/home/zhu/acfly/my_code/devel/include/ac_control/visino_fcu.h: /opt/ros/noetic/lib/gencpp/gen_cpp.py
-/home/zhu/acfly/my_code/devel/include/ac_control/visino_fcu.h: /home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv
-/home/zhu/acfly/my_code/devel/include/ac_control/visino_fcu.h: /opt/ros/noetic/share/gencpp/msg.h.template
-/home/zhu/acfly/my_code/devel/include/ac_control/visino_fcu.h: /opt/ros/noetic/share/gencpp/srv.h.template
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating C++ code from ac_control/visino_fcu.srv"
-	cd /home/zhu/acfly/my_code/src/ac_control && /home/zhu/acfly/my_code/build/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv -Iac_control:/home/zhu/acfly/my_code/src/ac_control/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p ac_control -o /home/zhu/acfly/my_code/devel/include/ac_control -e /opt/ros/noetic/share/gencpp/cmake/..
-
 ac_control_generate_messages_cpp: ac_control/CMakeFiles/ac_control_generate_messages_cpp
 ac_control_generate_messages_cpp: /home/zhu/acfly/my_code/devel/include/ac_control/qr_scanner.h
-ac_control_generate_messages_cpp: /home/zhu/acfly/my_code/devel/include/ac_control/visino_fcu.h
 ac_control_generate_messages_cpp: ac_control/CMakeFiles/ac_control_generate_messages_cpp.dir/build.make
 
 .PHONY : ac_control_generate_messages_cpp

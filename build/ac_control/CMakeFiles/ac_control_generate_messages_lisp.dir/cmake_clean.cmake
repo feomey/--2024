@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "/home/zhu/acfly/my_code/devel/share/common-lisp/ros/ac_control/msg/qr_scanner.lisp"
-  "/home/zhu/acfly/my_code/devel/share/common-lisp/ros/ac_control/srv/visino_fcu.lisp"
   "CMakeFiles/ac_control_generate_messages_lisp"
 )
 

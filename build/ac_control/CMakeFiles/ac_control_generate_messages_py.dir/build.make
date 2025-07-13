@@ -54,7 +54,6 @@ CMAKE_BINARY_DIR = /home/zhu/acfly/my_code/build
 include ac_control/CMakeFiles/ac_control_generate_messages_py.dir/progress.make
 
 ac_control/CMakeFiles/ac_control_generate_messages_py: /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/msg/_qr_scanner.py
-ac_control/CMakeFiles/ac_control_generate_messages_py: /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv/_visino_fcu.py
 ac_control/CMakeFiles/ac_control_generate_messages_py: /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/msg/__init__.py
 ac_control/CMakeFiles/ac_control_generate_messages_py: /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv/__init__.py
 
@@ -64,26 +63,18 @@ ac_control/CMakeFiles/ac_control_generate_messages_py: /home/zhu/acfly/my_code/d
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Python from MSG ac_control/qr_scanner"
 	cd /home/zhu/acfly/my_code/build/ac_control && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/zhu/acfly/my_code/src/ac_control/msg/qr_scanner.msg -Iac_control:/home/zhu/acfly/my_code/src/ac_control/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p ac_control -o /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/msg
 
-/home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv/_visino_fcu.py: /opt/ros/noetic/lib/genpy/gensrv_py.py
-/home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv/_visino_fcu.py: /home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating Python code from SRV ac_control/visino_fcu"
-	cd /home/zhu/acfly/my_code/build/ac_control && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/gensrv_py.py /home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv -Iac_control:/home/zhu/acfly/my_code/src/ac_control/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p ac_control -o /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv
-
 /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/msg/__init__.py: /opt/ros/noetic/lib/genpy/genmsg_py.py
 /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/msg/__init__.py: /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/msg/_qr_scanner.py
-/home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/msg/__init__.py: /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv/_visino_fcu.py
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating Python msg __init__.py for ac_control"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating Python msg __init__.py for ac_control"
 	cd /home/zhu/acfly/my_code/build/ac_control && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py -o /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/msg --initpy
 
 /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv/__init__.py: /opt/ros/noetic/lib/genpy/genmsg_py.py
 /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv/__init__.py: /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/msg/_qr_scanner.py
-/home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv/__init__.py: /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv/_visino_fcu.py
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating Python srv __init__.py for ac_control"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating Python srv __init__.py for ac_control"
 	cd /home/zhu/acfly/my_code/build/ac_control && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py -o /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv --initpy
 
 ac_control_generate_messages_py: ac_control/CMakeFiles/ac_control_generate_messages_py
 ac_control_generate_messages_py: /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/msg/_qr_scanner.py
-ac_control_generate_messages_py: /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv/_visino_fcu.py
 ac_control_generate_messages_py: /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/msg/__init__.py
 ac_control_generate_messages_py: /home/zhu/acfly/my_code/devel/lib/python3/dist-packages/ac_control/srv/__init__.py
 ac_control_generate_messages_py: ac_control/CMakeFiles/ac_control_generate_messages_py.dir/build.make

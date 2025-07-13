@@ -54,7 +54,6 @@ CMAKE_BINARY_DIR = /home/zhu/acfly/my_code/build
 include ac_control/CMakeFiles/ac_control_generate_messages_eus.dir/progress.make
 
 ac_control/CMakeFiles/ac_control_generate_messages_eus: /home/zhu/acfly/my_code/devel/share/roseus/ros/ac_control/msg/qr_scanner.l
-ac_control/CMakeFiles/ac_control_generate_messages_eus: /home/zhu/acfly/my_code/devel/share/roseus/ros/ac_control/srv/visino_fcu.l
 ac_control/CMakeFiles/ac_control_generate_messages_eus: /home/zhu/acfly/my_code/devel/share/roseus/ros/ac_control/manifest.l
 
 
@@ -63,18 +62,12 @@ ac_control/CMakeFiles/ac_control_generate_messages_eus: /home/zhu/acfly/my_code/
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating EusLisp code from ac_control/qr_scanner.msg"
 	cd /home/zhu/acfly/my_code/build/ac_control && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /home/zhu/acfly/my_code/src/ac_control/msg/qr_scanner.msg -Iac_control:/home/zhu/acfly/my_code/src/ac_control/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p ac_control -o /home/zhu/acfly/my_code/devel/share/roseus/ros/ac_control/msg
 
-/home/zhu/acfly/my_code/devel/share/roseus/ros/ac_control/srv/visino_fcu.l: /opt/ros/noetic/lib/geneus/gen_eus.py
-/home/zhu/acfly/my_code/devel/share/roseus/ros/ac_control/srv/visino_fcu.l: /home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating EusLisp code from ac_control/visino_fcu.srv"
-	cd /home/zhu/acfly/my_code/build/ac_control && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv -Iac_control:/home/zhu/acfly/my_code/src/ac_control/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p ac_control -o /home/zhu/acfly/my_code/devel/share/roseus/ros/ac_control/srv
-
 /home/zhu/acfly/my_code/devel/share/roseus/ros/ac_control/manifest.l: /opt/ros/noetic/lib/geneus/gen_eus.py
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating EusLisp manifest code for ac_control"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating EusLisp manifest code for ac_control"
 	cd /home/zhu/acfly/my_code/build/ac_control && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py -m -o /home/zhu/acfly/my_code/devel/share/roseus/ros/ac_control ac_control std_msgs
 
 ac_control_generate_messages_eus: ac_control/CMakeFiles/ac_control_generate_messages_eus
 ac_control_generate_messages_eus: /home/zhu/acfly/my_code/devel/share/roseus/ros/ac_control/msg/qr_scanner.l
-ac_control_generate_messages_eus: /home/zhu/acfly/my_code/devel/share/roseus/ros/ac_control/srv/visino_fcu.l
 ac_control_generate_messages_eus: /home/zhu/acfly/my_code/devel/share/roseus/ros/ac_control/manifest.l
 ac_control_generate_messages_eus: ac_control/CMakeFiles/ac_control_generate_messages_eus.dir/build.make
 

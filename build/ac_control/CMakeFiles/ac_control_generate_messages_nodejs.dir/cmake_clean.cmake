@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "/home/zhu/acfly/my_code/devel/share/gennodejs/ros/ac_control/msg/qr_scanner.js"
-  "/home/zhu/acfly/my_code/devel/share/gennodejs/ros/ac_control/srv/visino_fcu.js"
   "CMakeFiles/ac_control_generate_messages_nodejs"
 )
 

@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.cmake.em
 
-message(STATUS "ac_control: 1 messages, 1 services")
+message(STATUS "ac_control: 1 messages, 0 services")
 
 set(MSG_I_FLAGS "-Iac_control:/home/zhu/acfly/my_code/src/ac_control/msg;-Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg")
 
@@ -22,11 +22,6 @@ add_custom_target(_ac_control_generate_messages_check_deps_${_filename}
   COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "ac_control" "/home/zhu/acfly/my_code/src/ac_control/msg/qr_scanner.msg" ""
 )
 
-get_filename_component(_filename "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv" NAME_WE)
-add_custom_target(_ac_control_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "ac_control" "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv" ""
-)
-
 #
 #  langs = gencpp;geneus;genlisp;gennodejs;genpy
 #
@@ -41,12 +36,6 @@ _generate_msg_cpp(ac_control
 )
 
 ### Generating Services
-_generate_srv_cpp(ac_control
-  "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv"
-  "${MSG_I_FLAGS}"
-  ""
-  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/ac_control
-)
 
 ### Generating Module File
 _generate_module_cpp(ac_control
@@ -61,8 +50,6 @@ add_dependencies(ac_control_generate_messages ac_control_generate_messages_cpp)
 
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/zhu/acfly/my_code/src/ac_control/msg/qr_scanner.msg" NAME_WE)
-add_dependencies(ac_control_generate_messages_cpp _ac_control_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv" NAME_WE)
 add_dependencies(ac_control_generate_messages_cpp _ac_control_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -82,12 +69,6 @@ _generate_msg_eus(ac_control
 )
 
 ### Generating Services
-_generate_srv_eus(ac_control
-  "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv"
-  "${MSG_I_FLAGS}"
-  ""
-  ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/ac_control
-)
 
 ### Generating Module File
 _generate_module_eus(ac_control
@@ -102,8 +83,6 @@ add_dependencies(ac_control_generate_messages ac_control_generate_messages_eus)
 
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/zhu/acfly/my_code/src/ac_control/msg/qr_scanner.msg" NAME_WE)
-add_dependencies(ac_control_generate_messages_eus _ac_control_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv" NAME_WE)
 add_dependencies(ac_control_generate_messages_eus _ac_control_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -123,12 +102,6 @@ _generate_msg_lisp(ac_control
 )
 
 ### Generating Services
-_generate_srv_lisp(ac_control
-  "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv"
-  "${MSG_I_FLAGS}"
-  ""
-  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/ac_control
-)
 
 ### Generating Module File
 _generate_module_lisp(ac_control
@@ -143,8 +116,6 @@ add_dependencies(ac_control_generate_messages ac_control_generate_messages_lisp)
 
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/zhu/acfly/my_code/src/ac_control/msg/qr_scanner.msg" NAME_WE)
-add_dependencies(ac_control_generate_messages_lisp _ac_control_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv" NAME_WE)
 add_dependencies(ac_control_generate_messages_lisp _ac_control_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -164,12 +135,6 @@ _generate_msg_nodejs(ac_control
 )
 
 ### Generating Services
-_generate_srv_nodejs(ac_control
-  "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv"
-  "${MSG_I_FLAGS}"
-  ""
-  ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/ac_control
-)
 
 ### Generating Module File
 _generate_module_nodejs(ac_control
@@ -184,8 +149,6 @@ add_dependencies(ac_control_generate_messages ac_control_generate_messages_nodej
 
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/zhu/acfly/my_code/src/ac_control/msg/qr_scanner.msg" NAME_WE)
-add_dependencies(ac_control_generate_messages_nodejs _ac_control_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv" NAME_WE)
 add_dependencies(ac_control_generate_messages_nodejs _ac_control_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -205,12 +168,6 @@ _generate_msg_py(ac_control
 )
 
 ### Generating Services
-_generate_srv_py(ac_control
-  "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv"
-  "${MSG_I_FLAGS}"
-  ""
-  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/ac_control
-)
 
 ### Generating Module File
 _generate_module_py(ac_control
@@ -225,8 +182,6 @@ add_dependencies(ac_control_generate_messages ac_control_generate_messages_py)
 
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/zhu/acfly/my_code/src/ac_control/msg/qr_scanner.msg" NAME_WE)
-add_dependencies(ac_control_generate_messages_py _ac_control_generate_messages_check_deps_${_filename})
-get_filename_component(_filename "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv" NAME_WE)
 add_dependencies(ac_control_generate_messages_py _ac_control_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility

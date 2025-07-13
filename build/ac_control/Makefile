@@ -393,21 +393,6 @@ ac_control_genlisp/fast:
 .PHONY : ac_control_genlisp/fast
 
 # Convenience name for target.
-ac_control/CMakeFiles/_ac_control_generate_messages_check_deps_visino_fcu.dir/rule:
-	cd /home/zhu/acfly/my_code/build && $(MAKE) -f CMakeFiles/Makefile2 ac_control/CMakeFiles/_ac_control_generate_messages_check_deps_visino_fcu.dir/rule
-.PHONY : ac_control/CMakeFiles/_ac_control_generate_messages_check_deps_visino_fcu.dir/rule
-
-# Convenience name for target.
-_ac_control_generate_messages_check_deps_visino_fcu: ac_control/CMakeFiles/_ac_control_generate_messages_check_deps_visino_fcu.dir/rule
-
-.PHONY : _ac_control_generate_messages_check_deps_visino_fcu
-
-# fast build rule for target.
-_ac_control_generate_messages_check_deps_visino_fcu/fast:
-	cd /home/zhu/acfly/my_code/build && $(MAKE) -f ac_control/CMakeFiles/_ac_control_generate_messages_check_deps_visino_fcu.dir/build.make ac_control/CMakeFiles/_ac_control_generate_messages_check_deps_visino_fcu.dir/build
-.PHONY : _ac_control_generate_messages_check_deps_visino_fcu/fast
-
-# Convenience name for target.
 ac_control/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule:
 	cd /home/zhu/acfly/my_code/build && $(MAKE) -f CMakeFiles/Makefile2 ac_control/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule
 .PHONY : ac_control/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/rule
@@ -1555,7 +1540,6 @@ help:
 	@echo "... ac_control_generate_messages"
 	@echo "... nav_msgs_generate_messages_py"
 	@echo "... ac_control_genlisp"
-	@echo "... _ac_control_generate_messages_check_deps_visino_fcu"
 	@echo "... tf2_msgs_generate_messages_cpp"
 	@echo "... std_msgs_generate_messages_cpp"
 	@echo "... geometry_msgs_generate_messages_eus"

@@ -42,10 +42,6 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ac_control/srv" TYPE FILE FILES "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv")
-endif()
-
-if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ac_control/cmake" TYPE FILE FILES "/home/zhu/acfly/my_code/build/ac_control/catkin_generated/installspace/ac_control-msg-paths.cmake")
 endif()
 

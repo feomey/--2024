@@ -54,7 +54,6 @@ CMAKE_BINARY_DIR = /home/zhu/acfly/my_code/build
 include ac_control/CMakeFiles/ac_control_generate_messages_lisp.dir/progress.make
 
 ac_control/CMakeFiles/ac_control_generate_messages_lisp: /home/zhu/acfly/my_code/devel/share/common-lisp/ros/ac_control/msg/qr_scanner.lisp
-ac_control/CMakeFiles/ac_control_generate_messages_lisp: /home/zhu/acfly/my_code/devel/share/common-lisp/ros/ac_control/srv/visino_fcu.lisp
 
 
 /home/zhu/acfly/my_code/devel/share/common-lisp/ros/ac_control/msg/qr_scanner.lisp: /opt/ros/noetic/lib/genlisp/gen_lisp.py
@@ -62,14 +61,8 @@ ac_control/CMakeFiles/ac_control_generate_messages_lisp: /home/zhu/acfly/my_code
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Lisp code from ac_control/qr_scanner.msg"
 	cd /home/zhu/acfly/my_code/build/ac_control && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /home/zhu/acfly/my_code/src/ac_control/msg/qr_scanner.msg -Iac_control:/home/zhu/acfly/my_code/src/ac_control/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p ac_control -o /home/zhu/acfly/my_code/devel/share/common-lisp/ros/ac_control/msg
 
-/home/zhu/acfly/my_code/devel/share/common-lisp/ros/ac_control/srv/visino_fcu.lisp: /opt/ros/noetic/lib/genlisp/gen_lisp.py
-/home/zhu/acfly/my_code/devel/share/common-lisp/ros/ac_control/srv/visino_fcu.lisp: /home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating Lisp code from ac_control/visino_fcu.srv"
-	cd /home/zhu/acfly/my_code/build/ac_control && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv -Iac_control:/home/zhu/acfly/my_code/src/ac_control/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p ac_control -o /home/zhu/acfly/my_code/devel/share/common-lisp/ros/ac_control/srv
-
 ac_control_generate_messages_lisp: ac_control/CMakeFiles/ac_control_generate_messages_lisp
 ac_control_generate_messages_lisp: /home/zhu/acfly/my_code/devel/share/common-lisp/ros/ac_control/msg/qr_scanner.lisp
-ac_control_generate_messages_lisp: /home/zhu/acfly/my_code/devel/share/common-lisp/ros/ac_control/srv/visino_fcu.lisp
 ac_control_generate_messages_lisp: ac_control/CMakeFiles/ac_control_generate_messages_lisp.dir/build.make
 
 .PHONY : ac_control_generate_messages_lisp

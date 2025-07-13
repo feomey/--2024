@@ -1,7 +1,7 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
 messages_str = "/home/zhu/acfly/my_code/src/ac_control/msg/qr_scanner.msg"
-services_str = "/home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv"
+services_str = ""
 pkg_name = "ac_control"
 dependencies_str = "std_msgs"
 langs = "gencpp;geneus;genlisp;gennodejs;genpy"

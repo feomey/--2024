@@ -71,10 +71,10 @@ add_message_files(
 #   Service1.srv
 #   Service2.srv
 # )
-add_service_files(
-  FILES
-  visino_fcu.srv
-)
+# add_service_files(
+#   FILES
+#   visino_fcu.srv
+# )
 ## Generate actions in the 'action' folder
 # add_action_files(
 #   FILES

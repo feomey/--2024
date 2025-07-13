@@ -54,7 +54,6 @@ CMAKE_BINARY_DIR = /home/zhu/acfly/my_code/build
 include ac_control/CMakeFiles/ac_control_generate_messages_nodejs.dir/progress.make
 
 ac_control/CMakeFiles/ac_control_generate_messages_nodejs: /home/zhu/acfly/my_code/devel/share/gennodejs/ros/ac_control/msg/qr_scanner.js
-ac_control/CMakeFiles/ac_control_generate_messages_nodejs: /home/zhu/acfly/my_code/devel/share/gennodejs/ros/ac_control/srv/visino_fcu.js
 
 
 /home/zhu/acfly/my_code/devel/share/gennodejs/ros/ac_control/msg/qr_scanner.js: /opt/ros/noetic/lib/gennodejs/gen_nodejs.py
@@ -62,14 +61,8 @@ ac_control/CMakeFiles/ac_control_generate_messages_nodejs: /home/zhu/acfly/my_co
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Javascript code from ac_control/qr_scanner.msg"
 	cd /home/zhu/acfly/my_code/build/ac_control && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/zhu/acfly/my_code/src/ac_control/msg/qr_scanner.msg -Iac_control:/home/zhu/acfly/my_code/src/ac_control/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p ac_control -o /home/zhu/acfly/my_code/devel/share/gennodejs/ros/ac_control/msg
 
-/home/zhu/acfly/my_code/devel/share/gennodejs/ros/ac_control/srv/visino_fcu.js: /opt/ros/noetic/lib/gennodejs/gen_nodejs.py
-/home/zhu/acfly/my_code/devel/share/gennodejs/ros/ac_control/srv/visino_fcu.js: /home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/zhu/acfly/my_code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating Javascript code from ac_control/visino_fcu.srv"
-	cd /home/zhu/acfly/my_code/build/ac_control && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/zhu/acfly/my_code/src/ac_control/srv/visino_fcu.srv -Iac_control:/home/zhu/acfly/my_code/src/ac_control/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p ac_control -o /home/zhu/acfly/my_code/devel/share/gennodejs/ros/ac_control/srv
-
 ac_control_generate_messages_nodejs: ac_control/CMakeFiles/ac_control_generate_messages_nodejs
 ac_control_generate_messages_nodejs: /home/zhu/acfly/my_code/devel/share/gennodejs/ros/ac_control/msg/qr_scanner.js
-ac_control_generate_messages_nodejs: /home/zhu/acfly/my_code/devel/share/gennodejs/ros/ac_control/srv/visino_fcu.js
 ac_control_generate_messages_nodejs: ac_control/CMakeFiles/ac_control_generate_messages_nodejs.dir/build.make
 
 .PHONY : ac_control_generate_messages_nodejs

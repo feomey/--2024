@@ -1,2 +1,2 @@
-ac_control
+ac_control:opencv_node
 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCATKIN_DEVEL_PREFIX=/home/zhu/acfly/my_code/devel -DCMAKE_INSTALL_PREFIX=/home/zhu/acfly/my_code/install -G Unix Makefiles

@@ -112,9 +112,9 @@ int main(int argc, char **argv)
                     case 0: // 起飞
                         pose.position.x = 0.0;
                         pose.position.y = 0.0;
-                        pose.position.z = 2.0; // 起飞高度2米
+                        pose.position.z = 1.5; // 起飞高度2米
                     
-                        if(local_pose.pose.position.z > 1.9 && local_pose.pose.position.z < 2.1)
+                        if(local_pose.pose.position.z > 1.4 && local_pose.pose.position.z < 1.6)
                         {
 
                             if(sametimes > 20)
@@ -134,7 +134,7 @@ int main(int argc, char **argv)
                         break;
                     case 1:// x轴前进
                         
-                        if(local_pose.pose.position.z > 1.9 && local_pose.pose.position.z < 2.1)
+                        if(local_pose.pose.position.z > 1.4 && local_pose.pose.position.z < 1.6)
                         {
 
                             if(sametimes > 20)
@@ -142,9 +142,9 @@ int main(int argc, char **argv)
                                 step = 2;
                                 sametimes = 0;
                                 ROS_INFO("(40,0)");
-                                pose.position.x = 40;
+                                pose.position.x = 1;
                                 pose.position.y = 0;
-                                pose.position.z = 2.0; 
+                                pose.position.z = 1.5; 
 
                             }else{
                                 sametimes++;
@@ -159,7 +159,7 @@ int main(int argc, char **argv)
                     break;
 
                     case 2: // y前进
-                        if(local_pose.pose.position.x > 39.9 && local_pose.pose.position.x < 40.1)
+                        if(local_pose.pose.position.x > 0.9 && local_pose.pose.position.x < 1.1)
                         {
                             
                             if(sametimes > 20)
@@ -167,9 +167,9 @@ int main(int argc, char **argv)
                                 step = 3;
                                 sametimes = 0;
                                 ROS_INFO("(40.40)");
-                                pose.position.x = 40;
-                                pose.position.y = 40;
-                                pose.position.z = 2.0; 
+                                pose.position.x = 1;
+                                pose.position.y = 1;
+                                pose.position.z = 1.5; 
                             }
                             else{
                                 sametimes++;
@@ -182,7 +182,7 @@ int main(int argc, char **argv)
                         break;
                     
                     case 3: // y轴前进
-                        if(local_pose.pose.position.y > 39.9 && local_pose.pose.position.y < 40.1)
+                        if(local_pose.pose.position.y > 0.9 && local_pose.pose.position.y < 1.1)
                         {
                             if(sametimes > 20)
                             {
@@ -190,8 +190,8 @@ int main(int argc, char **argv)
                                 sametimes = 0;
                                 ROS_INFO("(0,40)");
                                 pose.position.x = 0;
-                                pose.position.y = 40;
-                                pose.position.z = 2.0; 
+                                pose.position.y = 1;
+                                pose.position.z = 1.5; 
                             }
                             else
                             {
@@ -214,7 +214,7 @@ int main(int argc, char **argv)
                                 ROS_INFO("(0,0)");
                                 pose.position.x = 0.0;
                                 pose.position.y = 0.0;
-                                pose.position.z = 2.0; 
+                                pose.position.z = 1.5; 
                             }
                             else
                             {

@@ -132,6 +132,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/zhu/acfly/my_code/build/gtest/cmake_install.cmake")
   include("/home/zhu/acfly/my_code/build/ac_control/cmake_install.cmake")
+  include("/home/zhu/acfly/my_code/build/opencv_node/cmake_install.cmake")
 
 endif()
 

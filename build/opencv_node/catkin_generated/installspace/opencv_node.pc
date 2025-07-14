@@ -1,0 +1,8 @@
+prefix=/home/zhu/acfly/my_code/install
+
+Name: opencv_node
+Description: Description of opencv_node
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

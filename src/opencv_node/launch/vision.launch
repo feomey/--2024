@@ -1,0 +1,4 @@
+<launch>
+  <!-- <node pkg="opencv_node" type="cir.py" name="cir_node" output="screen"/> -->
+  <node pkg="opencv_node" type="qr_ros.py" name="qr_node" output="screen"/>
+</launch>

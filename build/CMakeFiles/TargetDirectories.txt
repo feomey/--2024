@@ -121,3 +121,10 @@
 /home/zhu/acfly/my_code/build/ac_control/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir
 /home/zhu/acfly/my_code/build/ac_control/CMakeFiles/uuid_msgs_generate_messages_py.dir
 /home/zhu/acfly/my_code/build/ac_control/CMakeFiles/nav_msgs_generate_messages_lisp.dir
+/home/zhu/acfly/my_code/build/opencv_node/CMakeFiles/install/strip.dir
+/home/zhu/acfly/my_code/build/opencv_node/CMakeFiles/install/local.dir
+/home/zhu/acfly/my_code/build/opencv_node/CMakeFiles/install.dir
+/home/zhu/acfly/my_code/build/opencv_node/CMakeFiles/list_install_components.dir
+/home/zhu/acfly/my_code/build/opencv_node/CMakeFiles/rebuild_cache.dir
+/home/zhu/acfly/my_code/build/opencv_node/CMakeFiles/edit_cache.dir
+/home/zhu/acfly/my_code/build/opencv_node/CMakeFiles/test.dir

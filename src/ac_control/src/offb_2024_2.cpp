@@ -16,23 +16,25 @@
 #include <deque>
 // ===================== 全局变量 =====================
 
-
 // ================== 通用结构体与工具 ==================
-struct Waypoint {
+struct Waypoint
+{
     double x, y, z;
     std::string location;
     std::string scan_name;
     bool need_scan;
 };
 
-bool isReached(const geometry_msgs::PoseStamped& pose, const Waypoint& wp, double tol = 0.05) {
+bool isReached(const geometry_msgs::PoseStamped &pose, const Waypoint &wp, double tol = 0.05)
+{
     return std::fabs(pose.pose.position.x - wp.x) < tol &&
            std::fabs(pose.pose.position.y - wp.y) < tol &&
            std::fabs(pose.pose.position.z - wp.z) < tol;
 }
 
-void publishStatus(ros::Publisher& state_pub, ros::Publisher& loc_pub, std_msgs::Bool& state,
-                     std_msgs::String& loc, const std::string& location, const bool& arrived) {
+void publishStatus(ros::Publisher &state_pub, ros::Publisher &loc_pub, std_msgs::Bool &state,
+                   std_msgs::String &loc, const std::string &location, const bool &arrived)
+{
     state.data = arrived;
     state_pub.publish(state);
     loc.data = location;
@@ -69,12 +71,13 @@ std::deque<geometry_msgs::PoseStamped> pose_history_;
 void poseCallback(const geometry_msgs::PoseStamped::ConstPtr &msg)
 {
     pose_history_.push_back(*msg);
-    if (pose_history_.size() > 10000) {
+    if (pose_history_.size() > 10000)
+    {
         pose_history_.pop_front(); // 保持最多100个历史位姿
     }
     local_pose = *msg;
     // 发布路径点到路径话题
-    
+
     path.header.stamp = ros::Time::now();
     path.header.frame_id = "camera_link";
     path.poses.assign(pose_history_.begin(), pose_history_.end());
@@ -93,58 +96,85 @@ void VisinoCallBack(const ac_control::qr_scanner::ConstPtr &msg)
 }
 
 // ================== mode1主流程 ==================
-void runMode1(const std::vector<Waypoint>& waypoints, int& step, int& sametimes, mavros_msgs::PositionTarget& pose,
-              ros::Publisher& local_pose_pub, ros::Publisher& fcu_state_pub, ros::Publisher& fcu_location_pub,
-              std_msgs::Bool& fcu_state, std_msgs::String& fcu_location, const geometry_msgs::PoseStamped& local_pose,
-              const std_msgs::Bool& vision_state,ros::ServiceClient& set_mode_client, ros::Time& last_request, bool &mission_finished,
-              ros::ServiceClient &arming_client, int &mode) {
+void runMode1(const std::vector<Waypoint> &waypoints, int &step, int &sametimes, mavros_msgs::PositionTarget &pose,
+              ros::Publisher &local_pose_pub, ros::Publisher &fcu_state_pub, ros::Publisher &fcu_location_pub,
+              std_msgs::Bool &fcu_state, std_msgs::String &fcu_location, const geometry_msgs::PoseStamped &local_pose,
+              const std_msgs::Bool &vision_state, ros::ServiceClient &set_mode_client, ros::Time &last_request, bool &mission_finished,
+              ros::ServiceClient &arming_client, int &mode)
+{
     if (step < waypoints.size() - 1)
-    { 
-        const auto& wp = waypoints[step];
+    {
+        const auto &wp = waypoints[step];
         pose.position.x = wp.x;
         pose.position.y = wp.y;
         pose.position.z = wp.z;
         local_pose_pub.publish(pose);
 
-        if (isReached(local_pose, wp)) {
-            if (sametimes > 10) {
-                if(wp.need_scan)   publishStatus(fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, wp.location, wp.need_scan);
-                if (vision_state.data) {
-                    // 如果需要扫描且视觉状态为真，表示已扫描到
+        if (isReached(local_pose, wp))
+        {
+            if (sametimes > 10)
+            {   
+                // 到达目的点
+                if (wp.need_scan)
+                    publishStatus(fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, wp.location, wp.need_scan);
+
+                // 出发前往下一个点
+                if (vision_state.data && wp.need_scan)
+                {
                     publishStatus(fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, wp.scan_name, false);
                     step++;
                     sametimes = 0;
                     ROS_INFO("已到达%s并扫描%s，前往下一个点", wp.location.c_str(), wp.scan_name.c_str());
-                } else {
+                }
+                else if(wp.need_scan == false)
+                {
+                    publishStatus(fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, wp.location, false);
+                    ROS_INFO("已到达%s", wp.location.c_str());
+                    sametimes = 0; // 起飞点不需要扫描，直接跳过
+                    step++;
+                }
+                else
+                {
                     ROS_INFO("未扫描到%s，等待识别", wp.scan_name.c_str());
                 }
-            } else {
+            }
+            else
+            {
                 sametimes++;
             }
-        } else {
+        }
+        else
+        {
             sametimes = 0;
         }
     }
-    else if(step == waypoints.size() - 1) {
+    else if (step == waypoints.size() - 1)
+    {
         // 最后一个点，降落
-        const auto& wp = waypoints[step];
+        const auto &wp = waypoints[step];
         pose.position.x = wp.x;
         pose.position.y = wp.y;
         pose.position.z = wp.z;
         local_pose_pub.publish(pose);
 
-        if(isReached(local_pose, wp)) {
-            if (sametimes > 10) {
+        if (isReached(local_pose, wp))
+        {
+            if (sametimes > 10)
+            {
                 ROS_INFO("已到达%s，任务完成，准备降落", wp.location.c_str());
-                step += 1;     
-            } else {
+                step += 1;
+            }
+            else
+            {
                 sametimes++;
             }
-        } else {
+        }
+        else
+        {
             sametimes = 0;
         }
     }
-    else if(step == waypoints.size()) 
+    else if (step == waypoints.size())
     {
         pose.position.z = 0;
         mavros_msgs::SetMode offb_set_mode;
@@ -174,35 +204,35 @@ void runMode1(const std::vector<Waypoint>& waypoints, int& step, int& sametimes,
         else
         {
             sametimes = 0;
-        }    
+        }
     }
-    else 
+    else
     {
         ROS_WARN("step超出范围");
         return; // 如果step超出范围，直接返回
     }
-        
 }
 
 // ================== mode2主流程 ==================
 using TaskMap = std::map<int, Waypoint>;
 using AreaMap = std::map<std::string, TaskMap>;
 
-void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sametimes, mavros_msgs::PositionTarget& pose,
-              ros::Publisher& local_pose_pub, ros::Publisher& fcu_state_pub, ros::Publisher& fcu_location_pub,
-              std_msgs::Bool& fcu_state, std_msgs::String& fcu_location, const geometry_msgs::PoseStamped& local_pose,
-              const std_msgs::Bool& vision_state, const AreaMap& allAreas,
-              mavros_msgs::SetMode& offb_set_mode, ros::ServiceClient& set_mode_client,
-              ros::Time& last_request, bool &mission_finished,
+void runMode2(const std::string &bigClass, int targetIdx, int &step, int &sametimes, mavros_msgs::PositionTarget &pose,
+              ros::Publisher &local_pose_pub, ros::Publisher &fcu_state_pub, ros::Publisher &fcu_location_pub,
+              std_msgs::Bool &fcu_state, std_msgs::String &fcu_location, const geometry_msgs::PoseStamped &local_pose,
+              const std_msgs::Bool &vision_state, const AreaMap &allAreas,
+              mavros_msgs::SetMode &offb_set_mode, ros::ServiceClient &set_mode_client,
+              ros::Time &last_request, bool &mission_finished,
               ros::ServiceClient &arming_client, int &mode)
 {
     // 查找目标区
     auto areaIt = allAreas.find(bigClass);
-    if (areaIt == allAreas.end()) {
+    if (areaIt == allAreas.end())
+    {
         ROS_WARN("未知区域: %s", bigClass.c_str());
         return;
     }
-    const TaskMap& taskMap = areaIt->second;
+    const TaskMap &taskMap = areaIt->second;
 
     // 路径点序列：起始点 -> 目标点 -> 结束点
     std::vector<int> pathIdx = {0, targetIdx, (int)taskMap.size() - 1};
@@ -216,8 +246,9 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
     // step=4: 任务完成并上锁
 
     // 1. 起飞到起始点
-    if (step == 0) {
-        const Waypoint& wp = taskMap.at(pathIdx[0]);
+    if (step == 0)
+    {
+        const Waypoint &wp = taskMap.at(pathIdx[0]);
         pose.position.x = wp.x;
         pose.position.y = wp.y;
         pose.position.z = wp.z;
@@ -225,23 +256,30 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
         fcu_location.data = wp.location;
         fcu_location_pub.publish(fcu_location);
 
-        if (isReached(local_pose, wp)) {
-            if (sametimes > 10) {
+        if (isReached(local_pose, wp))
+        {
+            if (sametimes > 10)
+            {
                 step++;
                 sametimes = 0;
                 ROS_INFO("已到达%s，准备前往目标货位", wp.location.c_str());
-            } else {
+            }
+            else
+            {
                 sametimes++;
             }
-        } else {
+        }
+        else
+        {
             sametimes = 0;
         }
         return;
     }
 
     // 2. 到目标货位点
-    if (step == 1) {
-        const Waypoint& wp = taskMap.at(pathIdx[1]);
+    if (step == 1)
+    {
+        const Waypoint &wp = taskMap.at(pathIdx[1]);
         pose.position.x = wp.x;
         pose.position.y = wp.y;
         pose.position.z = wp.z;
@@ -249,29 +287,39 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
         fcu_location.data = wp.location;
         fcu_location_pub.publish(fcu_location);
 
-        if (isReached(local_pose, wp)) {
-            if (sametimes > 10) {
+        if (isReached(local_pose, wp))
+        {
+            if (sametimes > 10)
+            {
                 publishStatus(fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, wp.location, true);
-                if (vision_state.data) {
+                if (vision_state.data)
+                {
                     step++;
                     sametimes = 0;
                     publishStatus(fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, wp.location, false);
                     ROS_INFO("已到达%s并扫描，准备前往结束点", wp.location.c_str());
-                } else {
+                }
+                else
+                {
                     ROS_INFO("未扫描到%s，等待识别", wp.location.c_str());
                 }
-            } else {
-                sametimes++;   
             }
-        } else {
+            else
+            {
+                sametimes++;
+            }
+        }
+        else
+        {
             sametimes = 0;
         }
         return;
     }
 
     // 3. 到结束点
-    if (step == 2) {
-        const Waypoint& wp = taskMap.at(pathIdx[2]);
+    if (step == 2)
+    {
+        const Waypoint &wp = taskMap.at(pathIdx[2]);
         pose.position.x = wp.x;
         pose.position.y = wp.y;
         pose.position.z = wp.z;
@@ -279,22 +327,29 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
         fcu_location.data = wp.location;
         fcu_location_pub.publish(fcu_location);
 
-        if (isReached(local_pose, wp)) {
-            if (sametimes > 10) {
+        if (isReached(local_pose, wp))
+        {
+            if (sametimes > 10)
+            {
                 step++;
                 sametimes = 0;
                 ROS_INFO("已到达结束点%s，准备降落", wp.location.c_str());
-            } else {
+            }
+            else
+            {
                 sametimes++;
             }
-        } else {
+        }
+        else
+        {
             sametimes = 0;
         }
         return;
     }
 
     // step=3: 到降落点
-    if (step == 3) {
+    if (step == 3)
+    {
         pose.position.x = landing_wp.x;
         pose.position.y = landing_wp.y;
         pose.position.z = landing_wp.z;
@@ -302,22 +357,29 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
         fcu_location.data = landing_wp.location;
         fcu_location_pub.publish(fcu_location);
 
-        if (isReached(local_pose, landing_wp)) {
-            if (sametimes > 10) {
+        if (isReached(local_pose, landing_wp))
+        {
+            if (sametimes > 10)
+            {
                 step++;
                 sametimes = 0;
                 ROS_INFO("已到达降落点，准备降落");
-            } else {
+            }
+            else
+            {
                 sametimes++;
             }
-        } else {
+        }
+        else
+        {
             sametimes = 0;
         }
         return;
     }
 
     // step=4: 降落
-    if (step == 4) {
+    if (step == 4)
+    {
         pose.position.x = landing_wp.x;
         pose.position.y = landing_wp.y;
         pose.position.z = 0.5; // 降落高度
@@ -339,7 +401,7 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
             {
                 mission_finished = true;
                 mode = 3;
-                step ++;
+                step++;
                 ROS_INFO("降落完成，任务2结束，进入空闲模式");
             }
             else
@@ -347,17 +409,18 @@ void runMode2(const std::string& bigClass, int targetIdx, int& step, int& sameti
                 sametimes++;
             }
         }
-
     }
     // step>4: 任务完成
-    else{
+    else
+    {
         ROS_INFO("区域%s任务全部完成", bigClass.c_str());
         return;
     }
 }
 
 // ================== 主函数 ==================
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     setlocale(LC_ALL, "");
     ros::init(argc, argv, "offb_node");
     ros::NodeHandle nh;
@@ -387,13 +450,15 @@ int main(int argc, char **argv) {
     pose.position.z = 0.5;
 
     // 等待飞控连接
-    while (ros::ok() && !current_state.connected) {
+    while (ros::ok() && !current_state.connected)
+    {
         ros::spinOnce();
         rate.sleep();
     }
     ROS_INFO("飞控已连接，开始发布目标位置...");
 
-    for (int i = 100; ros::ok() && i > 0; --i) {
+    for (int i = 100; ros::ok() && i > 0; --i)
+    {
         local_pose_pub.publish(pose);
         ros::spinOnce();
         rate.sleep();
@@ -449,9 +514,7 @@ int main(int argc, char **argv) {
         {1.75, -3.0, 1.0, "D6", "D6", true},
         {1.25, -3.0, 1.0, "D5", "D5", true},
         {0.75, -3.0, 1.0, "D4", "D4", true},
-        {2.50, -3.5, 1.0, "landing", "landing", false} 
-
-
+        {2.50, -3.5, 1.0, "landing", "landing", false}
 
     };
 
@@ -464,8 +527,7 @@ int main(int argc, char **argv) {
         {4, {1.75, -0.5, 1.0, "A4", "A4"}},
         {5, {1.24, -0.5, 1.0, "A5", "A5"}},
         {6, {0.75, -0.5, 1.0, "A6", "A6"}},
-        {7, {2.50, -0.5, 1.0, "A区结束", "A区结束"}}
-    };
+        {7, {2.50, -0.5, 1.0, "A区结束", "A区结束"}}};
     TaskMap areaB = {
         {0, {0.0, -1.0, 1.4, "B区起始", "B区起始"}},
         {1, {0.75, -1.0, 1.4, "B1", "B1"}},
@@ -474,8 +536,7 @@ int main(int argc, char **argv) {
         {4, {0.75, -1.0, 1.1, "B4", "B4"}},
         {5, {1.25, -1.0, 1.0, "B5", "B5"}},
         {6, {1.75, -1.0, 1.0, "B6", "B6"}},
-        {7, {2.50, -1.0, 1.4, "B区结束", "B区结束"}}
-    };
+        {7, {2.50, -1.0, 1.4, "B区结束", "B区结束"}}};
     TaskMap areaC = {
         {0, {0.0, -2.5, 1.4, "C区起始", "C区起始"}},
         {1, {1.75, -2.5, 1.4, "C1", "C1"}},
@@ -484,24 +545,21 @@ int main(int argc, char **argv) {
         {4, {1.75, -2.5, 1.0, "C4", "C4"}},
         {5, {1.25, -2.5, 1.0, "C5", "C5"}},
         {6, {0.75, -2.5, 1.0, "C6", "C6"}},
-        {7, {2.50, -2.5, 1.0, "C区结束", "C区结束"}}
-    };
+        {7, {2.50, -2.5, 1.0, "C区结束", "C区结束"}}};
     TaskMap areaD = {
         {0, {0.0, -3.0, 1.4, "D区起始", "D区起始"}},
-        {1, {0.75, -3.0, 1.4, "D1", "D1"}}, 
+        {1, {0.75, -3.0, 1.4, "D1", "D1"}},
         {2, {1.25, -3.0, 1.4, "D2", "D2"}},
         {3, {1.75, -3.0, 1.4, "D3", "D3"}},
         {4, {0.75, -3.0, 1.1, "D4", "D4"}},
         {5, {1.25, -3.0, 1.0, "D5", "D5"}},
         {6, {1.75, -3.0, 1.0, "D6", "D6"}},
-        {7, {2.50, -3.0, 1.0, "D区结束", "D区结束"}}
-    };
+        {7, {2.50, -3.0, 1.0, "D区结束", "D区结束"}}};
     AreaMap allAreas = {
         {"A", areaA},
         {"B", areaB},
         {"C", areaC},
-        {"D", areaD}
-    };
+        {"D", areaD}};
 
     int mode1_step = 0, mode2_step = 0, sametimes = 0;
     int mode = 1;
@@ -510,9 +568,9 @@ int main(int argc, char **argv) {
     int subTask;
     bool mission_finished = false;
 
-    while (ros::ok()) { 
-        // 解析视觉任务
-        parseTask(vision_date.position, bigClass, subTask);
+    while (ros::ok())
+    {
+        
         mode = vision_date.mode;
 
         // 检查是否有新的任务模式
@@ -524,45 +582,57 @@ int main(int argc, char **argv) {
             mode1_step = 0;
             mode2_step = 0;
             sametimes = 0;
-            
+
             ROS_INFO("收到新任务模式: %d，开始新任务", mode);
         }
-        
-        // 如果任务完成，保持当前状态  
-        if(mission_finished)
+
+        // 如果任务完成，保持当前状态
+        if (mission_finished)
         {
             ros::spinOnce();
-            rate.sleep();   
+            rate.sleep();
         }
         else
         {
             // 模式切换与解锁逻辑
             if (current_state.mode != "OFFBOARD" &&
-                (ros::Time::now() - last_request > ros::Duration(5.0))) {
+                (ros::Time::now() - last_request > ros::Duration(5.0)))
+            {
                 if (set_mode_client.call(offb_set_mode) &&
-                    offb_set_mode.response.mode_sent) {
+                    offb_set_mode.response.mode_sent)
+                {
                     ROS_INFO("Offboard enabled");
                 }
                 last_request = ros::Time::now();
-            } else {
+            }
+            else
+            {
                 if (!current_state.armed &&
-                    (ros::Time::now() - last_request > ros::Duration(5.0))) {
+                    (ros::Time::now() - last_request > ros::Duration(5.0)))
+                {
                     if (arming_client.call(arm_cmd) &&
-                        arm_cmd.response.success) {
+                        arm_cmd.response.success)
+                    {
                         ROS_INFO("Vehicle armed");
                     }
                     last_request = ros::Time::now();
-                } else {
-                    if (mode == 1) {
-                        runMode1(mode1_waypoints, mode1_step, sametimes, pose, local_pose_pub, 
-                                fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, local_pose, 
-                                vision_state, set_mode_client, last_request, mission_finished, 
-                                arming_client, mode);
-                    } else if (mode == 2) {
-                        runMode2(bigClass, subTask, mode2_step, sametimes, pose, local_pose_pub, 
-                                fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, local_pose, 
-                                vision_state, allAreas, offb_set_mode, set_mode_client,
-                                last_request, mission_finished, arming_client, mode);
+                }
+                else
+                {
+                    if (mode == 1)
+                    {
+                        runMode1(mode1_waypoints, mode1_step, sametimes, pose, local_pose_pub,
+                                 fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, local_pose,
+                                 vision_state, set_mode_client, last_request, mission_finished,
+                                 arming_client, mode);
+                    }
+                    else if (mode == 2)
+                    {
+                        parseTask(vision_date.position, bigClass, subTask);
+                        runMode2(bigClass, subTask, mode2_step, sametimes, pose, local_pose_pub,
+                                 fcu_state_pub, fcu_location_pub, fcu_state, fcu_location, local_pose,
+                                 vision_state, allAreas, offb_set_mode, set_mode_client,
+                                 last_request, mission_finished, arming_client, mode);
                     }
                 }
             }
